@@ -6,16 +6,19 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sortAscending, setSortAscending] = useState(true);
 
-    const fetchHandler = async () => {
+  const fetchHandler = async () => {
     setIsLoading(true);
     const data = await fetch(
       "https://content.newtonschool.co/v1/pr/main/users"
     );
-    data.json().then((dt) => setUsers([...dt]));
+    data.json().then((dt) => {
+      console.log(dt);
+      setUsers([...dt]);
+    });
     setIsLoading(false);
   };
 
-   const sortHanlder = () => {
+  const sortHanlder = () => {
     if (sortAscending) {
       setUsers((prevUsers) =>
         prevUsers.sort((a, b) => a.name.length - b.name.length)
@@ -38,10 +41,7 @@ const App = () => {
       <button className="fetch-data-btn" onClick={fetchHandler}>
         Fetch User Data
       </button>
-      <button
-        className="sort-btn"
-       onClick={sortHanlder}
-      >
+      <button className="sort-btn" onClick={sortHanlder}>
         {sortAscending
           ? "Sort by name length (ascending)"
           : "Sort by name length (descending)"}
@@ -51,7 +51,7 @@ const App = () => {
       <div className="users-section">
         {users.map((user) => (
           <li>
-            <section className="id-section"></section>
+            <section className="id-section">{user.id}</section>
             <section className="name-email-section">
               <p className="name">Name: {user.name} </p>
               <p className="email">Email: {user.email}</p>
